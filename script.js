@@ -1,5 +1,9 @@
-var width = 420;
-var height = 630;
+var canvas = document.getElementById("arena");
+var button = document.getElementById("undo");
+var sound = document.getElementById("sound");
+var turnIndicator = document.getElementById("turnIndicator");
+var width = canvas.width//420;
+var height = canvas.height;//630;
 var gapWidth = width/6;
 var gapHeight = height/9;
 var turnCount = 0;
@@ -13,9 +17,7 @@ var isGameOver = false;
 var counterAnimate = 0;
 var flag = false;
 
-var canvas = document.getElementById("arena");
-var button = document.getElementById("undo");
-var sound = document.getElementById("sound");
+
 var gameArena = canvas.getContext("2d");
 canvas.addEventListener("click", gameLoop);
 button.addEventListener("click", undoGame);
@@ -136,6 +138,7 @@ function takeBackUp()
 
 function gameLoop(event)
 {
+    event.preventDefault();
 	var rect = canvas.getBoundingClientRect();
 	var x = event.clientX - rect.left;
 	var y = event.clientY - rect.top;
@@ -149,14 +152,18 @@ function gameLoop(event)
 		if(turnCount%2 == 0 && (colorMatrix[column][row] == "" || colorMatrix[column][row] == "red"))
 		{
 			countMatrix[column][row]++;		//Weird graphic coordinate-system
-			colorMatrix[column][row] = "red";
+            colorMatrix[column][row] = "red";
+            //turnIndicator.innerHTML = "Greens's Turn";
+            //turnIndicator.style.color = "green";
 			turnCount++;
 			flag = false;
 		}
 		if(turnCount%2 == 1 && (colorMatrix[column][row] == "" || colorMatrix[column][row] == "green"))
 		{
 			countMatrix[column][row]++;		//Weird graphic coordinate-system
-			colorMatrix[column][row] = "green";
+            colorMatrix[column][row] = "green";
+            //turnIndicator.innerHTML = "Red's Turn";
+            //turnIndicator.style.color = "red";
 			turnCount++;
 			flag = false;
 		}
@@ -340,7 +347,7 @@ function gameOverScreen(player)
 function oneCircle(row, column, color)
 {
 	gameArena.beginPath();
-	gameArena.arc(column*gapWidth + 35, row*gapHeight + 35, 15, 0, Math.PI*2);
+	gameArena.arc(column*gapWidth  + 35, row*gapHeight + 35,Math.ceil(gapWidth/10), 0, Math.PI*2);//changed the radius to be 1/10th of cell size
 	gameArena.fillStyle = color;
 	gameArena.fill();
 	if((row == 0 && column == 0) || (row == 8 && column == 0) || (row == 0 && column == 5) || (row == 8 && column == 5))
@@ -363,7 +370,7 @@ function oneCircle(row, column, color)
 function twoCircle(row, column, color)
 {
 	gameArena.beginPath();
-	gameArena.arc(column*gapWidth + 20, row*gapHeight + 35, 15, 0, Math.PI*2);
+	gameArena.arc(column*gapWidth + 20, row*gapHeight + 35,Math.ceil(gapWidth/10), 0, Math.PI*2);
 	gameArena.fillStyle = color;
 	gameArena.fill();
 	if(((row >= 1 && row < 8) && (column == 0 || column == 5)) || ((row == 0 || row == 8) && (column >= 1 && column < 5)))
@@ -383,7 +390,7 @@ function twoCircle(row, column, color)
 	gameArena.lineWidth = 1;
 
 	gameArena.beginPath();
-	gameArena.arc(column*gapWidth + 50, row*gapHeight + 35, 15, 0, Math.PI*2);
+	gameArena.arc(column*gapWidth + 50, row*gapHeight + 35,Math.ceil(gapWidth/10), 0, Math.PI*2);
 	gameArena.fillStyle = color;
 	gameArena.fill();
 	if(((row >= 1 && row < 8) && (column == 0 || column == 5)) || ((row == 0 || row == 8) && (column >= 1 && column < 5)))
@@ -406,7 +413,7 @@ function twoCircle(row, column, color)
 function threeCircle(row, column, color)
 {
 	gameArena.beginPath();
-	gameArena.arc(column*gapWidth + 20, row*gapHeight + 17, 15, 0, Math.PI*2);
+	gameArena.arc(column*gapWidth + 20, row*gapHeight + 17,Math.ceil(gapWidth/10), 0, Math.PI*2);
 	gameArena.fillStyle = color;
 	gameArena.fill();
 	if(counterAnimate%2 == 0)
@@ -419,7 +426,7 @@ function threeCircle(row, column, color)
 	gameArena.lineWidth = 1;
 
 	gameArena.beginPath();
-	gameArena.arc(column*gapWidth + 20, row*gapHeight + 53, 15, 0, Math.PI*2);
+	gameArena.arc(column*gapWidth + 20, row*gapHeight + 53, Math.ceil(gapWidth/10), 0, Math.PI*2);
 	gameArena.fillStyle = color;
 	gameArena.fill();
 	if(counterAnimate%2 == 0)
@@ -432,7 +439,7 @@ function threeCircle(row, column, color)
 	gameArena.lineWidth = 1;
 
 	gameArena.beginPath();
-	gameArena.arc(column*gapWidth + 50, row*gapHeight + 35, 15, 0, Math.PI*2);
+	gameArena.arc(column*gapWidth + 50, row*gapHeight + 35,Math.ceil(gapWidth/10), 0, Math.PI*2);
 	gameArena.fillStyle = color;
 	gameArena.fill();
 	if(counterAnimate%2 == 0)
